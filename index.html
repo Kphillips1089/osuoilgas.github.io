@@ -1,0 +1,60 @@
+<html>
+    
+    <head>
+      <title>A Leaflet map!</title>
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+      <script src ="Bike_Thefts_sample.js"></script>
+      <style>
+        #mapId {
+          width: 900px;
+          height: 500px;
+        }
+      </style>
+    </head>
+    
+    <body>
+    
+      <div id="mapId"></div>
+    
+      <script>
+    
+      function addPopups(feature, layer)
+      {
+        //if this statement used to check whether the feature has a property named "Location"
+        if (feature.properties && feature.properties.Location)
+        {
+          layer.bindPopup(feature.properties.Location);
+        }
+      }  
+    
+        /* initialize the map. 
+      setView method: Sets the view of the map (geographical center and zoom) with the given animation options.
+    
+      setView( <LatLng> center, <Number> zoom?, <zoom/pan options> options? )
+      */
+    
+        var map = L.map('mapId').setView([35.163660, -93.266466], 3.64);
+    
+        //replace the code below from the Plain JavaScript from the map style you choose
+        //at http://leaflet-extras.github.io/leaflet-providers/preview/
+    
+        var OpenStreetMap_BlackAndWhite = L.tileLayer('https://api.mapbox.com/styles/v1/sicparvismagna/cj8xfmdqwh19r2rpfmgwag1c4/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2ljcGFydmlzbWFnbmEiLCJhIjoiY2o3NDhmMms1MDIzaTJxbXRkZHdrNG5qdSJ9.p8mYSdkRDqWf3dR4x-QqpQ', {
+          maxZoom: 18,
+          attribution: '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
+        });
+    
+        //change the varialbe "OpenStreetMap_BlackAndWhite" according to the map style you choose
+        //It is the varialbe between "var" and "= L.titleLayer(..."  in Line 27 in this script
+        OpenStreetMap_BlackAndWhite.addTo(map);
+    
+        //L.geoJSON(bikeThefts).addTo(map);
+        L.geoJSON(bikeThefts, 
+        {
+          onEachFeature: addPopups
+        }).addTo(map);
+    
+      </script>
+    </body>
+    
+    </html>
