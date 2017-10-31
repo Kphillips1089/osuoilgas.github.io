@@ -1,62 +1,73 @@
 <html>
-    
-    <head>
-      <title>A Leaflet map that Joey changed!</title>
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-      <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-      <script src ="Bike_Thefts_sample.js"></script>
-      <style>
-        #mapId {
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-      </style>
-    </head>
-    
-    <body>
-    
-      <div id="mapId"></div>
-    
-      <script>
-    
-      function addPopups(feature, layer)
+
+<head>
+  <title>A Leaflet map that Joey changed!</title>
+
+  <!--links-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
+
+  <!--scripts-->
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script src="Bike_Thefts_sample.js"></script>
+
+  <style>
+    #mapId {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="mapId"></div>
+
+  <script>
+
+    function addPopups(feature, layer) {
+      //if this statement used to check whether the feature has a property named "Location"
+      if (feature.properties && feature.properties.Location) {
+        layer.bindPopup(feature.properties.Location);
+      }
+    }
+
+    /* initialize the map. 
+  setView method: Sets the view of the map (geographical center and zoom) with the given animation options.
+ 
+  setView( <LatLng> center, <Number> zoom?, <zoom/pan options> options? )
+  */
+
+    var map = L.map('mapId').setView([35.163660, -93.266466], 3.64);
+
+    //replace the code below from the Plain JavaScript from the map style you choose
+    //at http://leaflet-extras.github.io/leaflet-providers/preview/
+    var OpenStreetMap_BlackAndWhite = L.tileLayer('https://api.mapbox.com/styles/v1/roach202/cj6zhmvp60hdv2qn21eholv3s/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoicm9hY2gyMDIiLCJhIjoiY2o2emhrNmM1MDBrNzJxcWpvdmdncjVhYSJ9.HjiuTPR8ggkOhHhqcs_5dQ', {
+
+      maxZoom: 18,
+      attribution: '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
+    });
+
+    //change the varialbe "OpenStreetMap_BlackAndWhite" according to the map style you choose
+    //It is the varialbe between "var" and "= L.titleLayer(..."  in Line 27 in this script
+    OpenStreetMap_BlackAndWhite.addTo(map);
+
+    //L.geoJSON(bikeThefts).addTo(map);
+    L.geoJSON(bikeThefts,
       {
-        //if this statement used to check whether the feature has a property named "Location"
-        if (feature.properties && feature.properties.Location)
-        {
-          layer.bindPopup(feature.properties.Location);
-        }
-      }  
-    
-        /* initialize the map. 
-      setView method: Sets the view of the map (geographical center and zoom) with the given animation options.
-    
-      setView( <LatLng> center, <Number> zoom?, <zoom/pan options> options? )
-      */
-    
-        var map = L.map('mapId').setView([35.163660, -93.266466], 3.64);
-    
-        //replace the code below from the Plain JavaScript from the map style you choose
-        //at http://leaflet-extras.github.io/leaflet-providers/preview/
-    
-        var OpenStreetMap_BlackAndWhite = L.tileLayer('https://api.mapbox.com/styles/v1/roach202/cj6zhmvp60hdv2qn21eholv3s/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoicm9hY2gyMDIiLCJhIjoiY2o2emhrNmM1MDBrNzJxcWpvdmdncjVhYSJ9.HjiuTPR8ggkOhHhqcs_5dQ', {
-          
-            maxZoom: 18,
-          attribution: '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
-        });
-    
-        //change the varialbe "OpenStreetMap_BlackAndWhite" according to the map style you choose
-        //It is the varialbe between "var" and "= L.titleLayer(..."  in Line 27 in this script
-        OpenStreetMap_BlackAndWhite.addTo(map);
-    
-        //L.geoJSON(bikeThefts).addTo(map);
-        L.geoJSON(bikeThefts, 
-        {
-          onEachFeature: addPopups
-        }).addTo(map);
-    
-      </script>
-    </body>
-    
-    </html>
+        onEachFeature: addPopups
+      }).addTo(map);
+
+
+    //Adds the slider to the map
+    myMap.addControl(sliderControl);
+    //And initialize the slider
+    sliderControl.startSlider();
+
+  </script>
+</body>
+
+</html>
