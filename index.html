@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>A Leaflet map that Joey changed!</title>
+  <title>New title test</title>
 
   <!--links-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
@@ -35,27 +35,12 @@
       }
     }
 
-    //Initialize map
-    var map = L.map('mapId').setView([35.163660, -93.266466], 3.64);
-
-    //replace the code below from the Plain JavaScript from the map style you choose
-    //at http://leaflet-extras.github.io/leaflet-providers/preview/
-    var OpenStreetMap_Night = L.tileLayer('https://api.mapbox.com/styles/v1/roach202/cj6zhmvp60hdv2qn21eholv3s/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoicm9hY2gyMDIiLCJhIjoiY2o2emhrNmM1MDBrNzJxcWpvdmdncjVhYSJ9.HjiuTPR8ggkOhHhqcs_5dQ', {
-
-      maxZoom: 18,
-      attribution: '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
-    });
-
-    //change the varialbe "OpenStreetMap_BlackAndWhite" according to the map style you choose
-    //It is the varialbe between "var" and "= L.titleLayer(..."  in Line 27 in this script
-    OpenStreetMap_Night.addTo(map);
-
-    //L.geoJSON(bikeThefts).addTo(map);
-   /*  L.geoJSON(bikeThefts,
-      {
-        onEachFeature: addPopups
-      }).addTo(map); */
-
+    var map = L.map('mapId')
+    var MapURL = 'https://api.mapbox.com/styles/v1/roach202/cj6zhmvp60hdv2qn21eholv3s/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoicm9hY2gyMDIiLCJhIjoiY2o2emhrNmM1MDBrNzJxcWpvdmdncjVhYSJ9.HjiuTPR8ggkOhHhqcs_5dQ'
+    var attribution = '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
+    var MainMap = new L.TileLayer(MapURL, {minZoom: 0, maxZoom: 18, attribution: attribution});
+    MainMap.addTo(map);
+    map.setView(new L.LatLng(0, 0), 6);
 
     //Fetch some data from a GeoJSON file
     $.getJSON("Bike_Thefts_sample.json", function (json) {
