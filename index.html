@@ -6,12 +6,12 @@
 
   <!--links-->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css">
 
   <!--scripts-->
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
@@ -64,7 +64,7 @@
     var MapURL2 = 'https://api.mapbox.com/styles/v1/mapbox/satellite-streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoia2l3ayIsImEiOiJjajZ6aGJ2bGYyODBnMnh1aGVuMGdyOXc5In0.1WPUe4BtGuMQLegynCczeQ'
     var MainMap2 = new L.TileLayer(MapURL2, { minZoom: 0, maxZoom: 13 });
     var miniMap = new L.Control.MiniMap(MainMap2, { toggleDisplay: true }).addTo(map);
-    
+
 
     //Fetch data from "points" GeoJSON file
     $.getJSON("points.json", function(json) 
