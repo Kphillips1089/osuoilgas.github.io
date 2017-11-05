@@ -11,10 +11,10 @@ L.Control.SliderControl = L.Control.extend({
         showAllOnStart: false,
         markers: null,
         range: false,
-        follow: false,
+        follow: true,
         sameDate: false,
-        alwaysShowDate : false,
-        rezoom: null
+        alwaysShowDate: false,
+        rezoom: 10
     },
 
     initialize: function (options) {
@@ -23,7 +23,7 @@ L.Control.SliderControl = L.Control.extend({
 
     },
 
-    extractTimestamp: function(time, options) {
+    extractTimestamp: function (time, options) {
         if (options.isEpoch) {
             time = (new Date(parseInt(time))).toString(); // this is local time
         }
@@ -98,9 +98,9 @@ L.Control.SliderControl = L.Control.extend({
         _options = this.options;
         _extractTimestamp = this.extractTimestamp
         var index_start = _options.minValue;
-        if(_options.showAllOnStart){
+        if (_options.showAllOnStart) {
             index_start = _options.maxValue;
-            if(_options.range) _options.values = [_options.minValue,_options.maxValue];
+            if (_options.range) _options.values = [_options.minValue, _options.maxValue];
             else _options.value = _options.maxValue;
         }
         $("#leaflet-slider").slider({
@@ -114,46 +114,46 @@ L.Control.SliderControl = L.Control.extend({
             slide: function (e, ui) {
                 var map = _options.map;
                 var fg = L.featureGroup();
-                if(!!_options.markers[ui.value]) {
+                if (!!_options.markers[ui.value]) {
                     // If there is no time property, this line has to be removed (or exchanged with a different property)
-                    if(_options.markers[ui.value].feature !== undefined) {
-                        if(_options.markers[ui.value].feature.properties[_options.timeAttribute]){
-                            if(_options.markers[ui.value]) $('#slider-timestamp').html(
+                    if (_options.markers[ui.value].feature !== undefined) {
+                        if (_options.markers[ui.value].feature.properties[_options.timeAttribute]) {
+                            if (_options.markers[ui.value]) $('#slider-timestamp').html(
                                 _extractTimestamp(_options.markers[ui.value].feature.properties[_options.timeAttribute], _options));
-                        }else {
-                            console.error("Time property "+ _options.timeAttribute +" not found in data");
+                        } else {
+                            console.error("Time property " + _options.timeAttribute + " not found in data");
                         }
-                    }else {
+                    } else {
                         // set by leaflet Vector Layers
-                        if(_options.markers [ui.value].options[_options.timeAttribute]){
-                            if(_options.markers[ui.value]) $('#slider-timestamp').html(
+                        if (_options.markers[ui.value].options[_options.timeAttribute]) {
+                            if (_options.markers[ui.value]) $('#slider-timestamp').html(
                                 _extractTimestamp(_options.markers[ui.value].options[_options.timeAttribute], _options));
-                        }else {
-                            console.error("Time property "+ _options.timeAttribute +" not found in data");
+                        } else {
+                            console.error("Time property " + _options.timeAttribute + " not found in data");
                         }
                     }
 
                     var i;
                     // clear markers
                     for (i = _options.minValue; i <= _options.maxValue; i++) {
-                        if(_options.markers[i]) map.removeLayer(_options.markers[i]);
+                        if (_options.markers[i]) map.removeLayer(_options.markers[i]);
                     }
-                    if(_options.range){
+                    if (_options.range) {
                         // jquery ui using range
-                        for (i = ui.values[0]; i <= ui.values[1]; i++){
-                           if(_options.markers[i]) {
-                               map.addLayer(_options.markers[i]);
-                               fg.addLayer(_options.markers[i]);
-                           }
-                        }
-                    }else if(_options.follow){
-                        for (i = ui.value - _options.follow + 1; i <= ui.value ; i++) {
-                            if(_options.markers[i]) {
+                        for (i = ui.values[0]; i <= ui.values[1]; i++) {
+                            if (_options.markers[i]) {
                                 map.addLayer(_options.markers[i]);
                                 fg.addLayer(_options.markers[i]);
                             }
                         }
-                    }else if(_options.sameDate){
+                    } else if (_options.follow) {
+                        for (i = ui.value - _options.follow + 1; i <= ui.value; i++) {
+                            if (_options.markers[i]) {
+                                map.addLayer(_options.markers[i]);
+                                fg.addLayer(_options.markers[i]);
+                            }
+                        }
+                    } else if (_options.sameDate) {
                         var currentTime;
                         if (_options.markers[ui.value].feature !== undefined) {
                             currentTime = _options.markers[ui.value].feature.properties.time;
@@ -161,18 +161,18 @@ L.Control.SliderControl = L.Control.extend({
                             currentTime = _options.markers[ui.value].options.time;
                         }
                         for (i = _options.minValue; i <= _options.maxValue; i++) {
-                            if(_options.markers[i].options.time == currentTime) map.addLayer(_options.markers[i]);
+                            if (_options.markers[i].options.time == currentTime) map.addLayer(_options.markers[i]);
                         }
-                    }else{
-                        for (i = _options.minValue; i <= ui.value ; i++) {
-                            if(_options.markers[i]) {
+                    } else {
+                        for (i = _options.minValue; i <= ui.value; i++) {
+                            if (_options.markers[i]) {
                                 map.addLayer(_options.markers[i]);
                                 fg.addLayer(_options.markers[i]);
                             }
                         }
                     }
                 };
-                if(_options.rezoom) {
+                if (_options.rezoom) {
                     map.fitBounds(fg.getBounds(), {
                         maxZoom: _options.rezoom
                     });
