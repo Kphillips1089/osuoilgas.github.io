@@ -11,10 +11,10 @@ L.Control.SliderControl = L.Control.extend({
         showAllOnStart: false,
         markers: null,
         range: false,
-        follow: true,
+        follow: false,
         sameDate: false,
         alwaysShowDate: false,
-        rezoom: 10
+        rezoom: 0
     },
 
     initialize: function (options) {
