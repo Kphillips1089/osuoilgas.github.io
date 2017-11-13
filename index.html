@@ -52,7 +52,7 @@
 
     var map = L.map('mapId')
     var MapURL = 'https://api.mapbox.com/styles/v1/roach202/cj6zhmvp60hdv2qn21eholv3s/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoicm9hY2gyMDIiLCJhIjoiY2o2emhrNmM1MDBrNzJxcWpvdmdncjVhYSJ9.HjiuTPR8ggkOhHhqcs_5dQ'
-        var attribution = '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
+    var attribution = '&copy; <a href=”https://www.mapbox.com/about/maps/”>Mapbox</a> &copy; <a href=”http://www.openstreetmap.org/copyright”>OpenStreetMap</a>'
     var MainMap = new L.TileLayer(MapURL, { minZoom: 0, maxZoom: 15, attribution: attribution });
     MainMap.addTo(map);
     map.setView(new L.LatLng(39.754229, -98.127826), 5);
@@ -61,22 +61,54 @@
     var MainMap2 = new L.TileLayer(MapURL2, { minZoom: 0, maxZoom: 13 });
     var miniMap = new L.Control.MiniMap(MainMap2, { toggleDisplay: true }).addTo(map);
 
+    //Adds popup to each point
+    function addPopups(feature, testlayer)
+    {
+      //if this statement used to check whether the feature has a property named "coordinates"
+      if (feature.properties && feature.properties.CELLSYMB)
+      {
+        testlayer.bindPopup("Mining type: " + feature.properties.CELLSYMB);
+      }
+    }
+
 
     //Fetch data from "points" GeoJSON file
-    $.getJSON("1910to1919.json", function(json) 
+    $.getJSON("1900to1909.json", function(json) 
     {
-        var testlayer = L.geoJson(json);
+        //Adds popup with mining type and color
+        var testlayer = L.geoJson(json,
+        {
+          onEachFeature: addPopups,
+          style: function(feature)
+          {
+            switch (feature.properties.CELLSYMB)
+            {
+              case 1: return {color: "green"}
+              case 2: return {color: 'blue'}
+              case 3: return {color: 'yellow'}
+              case 4: return {color: 'orange'}
+            }
+          }
+        }
+      );
+        //end
+
         var sliderControl = L.control.sliderControl
         (
           {
                 position: "topright",
                 layer: testlayer,
-                range: true
+                //onEachFeature: addPopups
+
+                //add comma after testlayer to use range (below)
+                //range: true
           }
         )
+        
 
       //Adds the slider to the map
       map.addControl(sliderControl);
+
       //Initializes the slider
       sliderControl.startSlider();
     });
