@@ -67,7 +67,7 @@
       //if this statement used to check whether the feature has a property named "coordinates"
       if (feature.properties && feature.properties.CELLSYMB)
       {
-        testlayer.bindPopup("Mining type: " + feature.properties.CELLSYMB);
+        testlayer.bindPopup("Mining Type: " + feature.properties.CELLSYMB);
       }
     }
 
@@ -83,10 +83,10 @@
           {
             switch (feature.properties.CELLSYMB)
             {
-              case 1: return {color: "green"}
-              case 2: return {color: 'blue'}
-              case 3: return {color: 'yellow'}
-              case 4: return {color: 'orange'}
+              case 1: return {color: "green", weight: 1, fillOpacity: 0.2} //What type is 1?
+              case 2: return {color: 'blue', weight: 1, fillOpacity: 0.2} //What type is 2?
+              case 3: return {color: 'yellow', weight: 1 ,fillOpacity: 0.2} //What type is 3?
+              case 4: return {color: 'orange', weight: 1, fillOpacity: 0.2} //What type is 4?
             }
           }
         }
@@ -97,8 +97,7 @@
         (
           {
                 position: "topright",
-                layer: testlayer,
-                //onEachFeature: addPopups
+                layer: testlayer
 
                 //add comma after testlayer to use range (below)
                 //range: true
